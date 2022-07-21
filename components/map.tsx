@@ -77,6 +77,16 @@ export default function Map() {
           onLoad={onLoad}
           >
           
+          {/* Show the office marker on the map*/}
+          {office &&
+            <
+              Marker position={office}
+              icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"  
+            />
+          }
+          
+
+
           </GoogleMap>
       </div>
     </div>
