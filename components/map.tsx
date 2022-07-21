@@ -33,14 +33,24 @@ export default function Map() {
   //    useMemo will only recompute the memoized value when one of the dependencies has changed.
   //    This optimization helps to avoid expensive calculations on every render.
 
-  // Use the React useMemo Hook to cache the map center location so that it does not need to be recalculated.
+  // center: the React useMemo Hook for the initial center location
   const center = useMemo<LatLngLiteral>(() => ({ lat: 43, lng: -80 }), []);
-  // Memoize the Google Maps options: disable the default UI elements and the clickable icons
+  
+  // options: Memoize the Google Maps options: disable the default UI elements and the clickable icons
   const options = useMemo<MapOptions>(() => ({
     disableDefaultUI: true,
     clickableIcons: false,
-
   }), []);
+
+  // React useCallback Hook (https://reactjs.org/docs/hooks-reference.html#usecallback)
+  //    Returns a memoized callback.
+  //    Pass an inline callback and an array of dependencies.
+  //    useCallback will return a memoized version of the callback that only changes if one of the dependencies has changed.
+  //    This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders
+  //    useCallback(fn, deps) is equivalent to useMemo(() => fn, deps).
+
+  // onLoad: a callback for the mapRef object; initialize the ".current" property.
+  const onLoad = useCallback((map) => (mapRef.current = map), []);
   
   return (
     <div className="container">
@@ -55,6 +65,7 @@ export default function Map() {
           zoom={10}
           center={center}
           options={options}
+          onLoad={onLoad}
           >
           
           </GoogleMap>
