@@ -17,12 +17,19 @@ type MapOptions = google.maps.MapOptions;
 
 // Render the map
 export default function Map() {
-
-  // Use the React useMemo Hook to cache the map center location so that it does not need to be recalculated.
+  // React useMemo Hook (https://reactjs.org/docs/hooks-reference.html#usememo)
   // The useMemo Hook only runs when one of its dependencies update.
   // This can improve performace.
-  // useMemo Hook (https://www.w3schools.com/react/react_usememo.asp)
-  const center = useMemo(()=> ({ lat: 43, lng: -80 }), []);
+
+  // Use the React useMemo Hook to cache the map center location so that it does not need to be recalculated.
+  const center = useMemo(() => ({ lat: 43, lng: -80 }), []);
+  // Memoize the Google Maps options: disable the default UI elements and the clickable icons
+  const options = useMemo(() => ({
+    disableDefaultUI: true,
+    clickableIcons: false,
+
+  }), []);
+  
   return (
     <div className="container">
       {/* Control panel on the left */}
@@ -32,9 +39,11 @@ export default function Map() {
       {/* Map on the right */}
       <div className="map">
         <GoogleMap
+          mapContainerClassName="map-container"
           zoom={10}
           center={center}
-          mapContainerClassName="map-container">
+          options={options}
+          >
           
           </GoogleMap>
       </div>
