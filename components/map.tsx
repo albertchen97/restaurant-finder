@@ -9,12 +9,37 @@ import {
 import Places from "./places";
 import Distance from "./distance";
 
+// TypeScript aliases
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
 
+
+// Render the map
 export default function Map() {
-  return <div>Map</div>;
+
+  // Use the React useMemo Hook to cache the map center location so that it does not need to be recalculated.
+  // The useMemo Hook only runs when one of its dependencies update.
+  // This can improve performace.
+  // useMemo Hook (https://www.w3schools.com/react/react_usememo.asp)
+  const center = useMemo(()=> ({ lat: 43, lng: -80 }), []);
+  return (
+    <div className="container">
+      {/* Control panel on the left */}
+      <div className="controls">
+        <h1>Commute?</h1>
+      </div>
+      {/* Map on the right */}
+      <div className="map">
+        <GoogleMap
+          zoom={10}
+          center={center}
+          mapContainerClassName="map-container">
+          
+          </GoogleMap>
+      </div>
+    </div>
+  );
 }
 
 const defaultOptions = {
@@ -47,6 +72,7 @@ const farOptions = {
   fillColor: "#FF5252",
 };
 
+// Generate random houses to display
 const generateHouses = (position: LatLngLiteral) => {
   const _houses: Array<LatLngLiteral> = [];
   for (let i = 0; i < 100; i++) {
