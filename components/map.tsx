@@ -9,7 +9,7 @@ import {
 import Places from "./places";
 import Distance from "./distance";
 
-// TypeScript aliases
+// TypeScript type aliases
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
@@ -17,14 +17,26 @@ type MapOptions = google.maps.MapOptions;
 
 // Render the map
 export default function Map() {
+
+  // React userRef Hook (https://reactjs.org/docs/hooks-reference.html#useref)
+  //    useRef returns a mutable ref object whose
+  //    ".current" property is initialized to the passed argument(initialValue).
+  //    The returned object will persist for the full lifetime of the component.
+  
+  // mapRef: a React ref object (https://reactjs.org/docs/refs-and-the-dom.html)
+  //         for the map ID.
+  const mapRef = useRef<GoogleMap>();
+
   // React useMemo Hook (https://reactjs.org/docs/hooks-reference.html#usememo)
-  // The useMemo Hook only runs when one of its dependencies update.
-  // This can improve performace.
+  //    Returns a memoized value.
+  //    Pass a “create” function and an array of dependencies. 
+  //    useMemo will only recompute the memoized value when one of the dependencies has changed.
+  //    This optimization helps to avoid expensive calculations on every render.
 
   // Use the React useMemo Hook to cache the map center location so that it does not need to be recalculated.
-  const center = useMemo(() => ({ lat: 43, lng: -80 }), []);
+  const center = useMemo<LatLngLiteral>(() => ({ lat: 43, lng: -80 }), []);
   // Memoize the Google Maps options: disable the default UI elements and the clickable icons
-  const options = useMemo(() => ({
+  const options = useMemo<MapOptions>(() => ({
     disableDefaultUI: true,
     clickableIcons: false,
 
