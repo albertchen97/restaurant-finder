@@ -87,6 +87,18 @@ export default function Map() {
                   icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"  
               />
 
+              {/* Cluster the houses (group houses and show number of houses on the same area) */}
+              <MarkerClusterer>
+                {(clusterer) =>
+                  houses.map((house) => (
+                    <Marker
+                      key={house.lat}
+                      position={house}
+                      clusterer={clusterer} />
+                  ))
+                }
+              </MarkerClusterer>
+
               {houses.map((house) => (
                 <Marker key={house.lat} position={house} />
               ))}
