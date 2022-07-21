@@ -36,8 +36,9 @@ export default function Map() {
   // center: the React useMemo Hook for the initial center location
   const center = useMemo<LatLngLiteral>(() => ({ lat: 43, lng: -80 }), []);
   
-  // options: Memoize the Google Maps options: disable the default UI elements and the clickable icons
-  const options = useMemo<MapOptions>(() => ({
+  // options: memoize the Google Maps options
+  const options = useMemo<MapOptions>(() => ({    
+    // mapId: the styled map ID
     mapId: "1691f2058063216f",
     disableDefaultUI: true,
     clickableIcons: false,
@@ -50,6 +51,9 @@ export default function Map() {
   //    This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders
   //    useCallback(fn, deps) is equivalent to useMemo(() => fn, deps).
 
+  // The location of the office
+  const [office, setOffice] = useState<LatLngLiteral>();
+
   // onLoad: a callback for the mapRef object; initialize the ".current" property.
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   
@@ -58,6 +62,10 @@ export default function Map() {
       {/* Control panel on the left */}
       <div className="controls">
         <h1>Commute?</h1>
+        <Places setOffice={(position) => {
+          setOffice(position);
+          mapRef.current?.panTo(position);
+        } } />
       </div>
       {/* Map on the right */}
       <div className="map">
