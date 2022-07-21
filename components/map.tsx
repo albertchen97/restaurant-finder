@@ -38,6 +38,7 @@ export default function Map() {
   
   // options: Memoize the Google Maps options: disable the default UI elements and the clickable icons
   const options = useMemo<MapOptions>(() => ({
+    mapId: "1691f2058063216f",
     disableDefaultUI: true,
     clickableIcons: false,
   }), []);
