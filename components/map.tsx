@@ -78,11 +78,19 @@ export default function Map() {
           >
           
           {/* Show the office marker on the map*/}
-          {office &&
-            <
-              Marker position={office}
-              icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"  
-            />
+          {office && (
+            <>
+              <Marker position={office}
+                  icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"  
+              />
+              {/* Add circles for the commutable circle areas (radius in meters)*/}
+              <Circle center={office} radius={15000} options={ closeOptions } />
+              <Circle center={office} radius={30000} options={ middleOptions } />
+              <Circle center={office} radius={45000} options={ farOptions } />
+            </>
+          )
+
+
           }
           
 
