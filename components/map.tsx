@@ -51,12 +51,15 @@ export default function Map() {
   //    This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders
   //    useCallback(fn, deps) is equivalent to useMemo(() => fn, deps).
 
-  // The location of the office
+  // State for the office
   const [office, setOffice] = useState<LatLngLiteral>();
 
   // onLoad: a callback for the mapRef object; initialize the ".current" property.
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   
+  // houses: memo for the houses
+  const houses = useMemo(() => generateHouses(center), [center]);
+
   return (
     <div className="container">
       {/* Control panel on the left */}
@@ -83,6 +86,11 @@ export default function Map() {
               <Marker position={office}
                   icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"  
               />
+
+              {houses.map((house) => (
+                <Marker key={house.lat} position={house} />
+              ))}
+
               {/* Add circles for the commutable circle areas (radius in meters)*/}
               <Circle center={office} radius={15000} options={ closeOptions } />
               <Circle center={office} radius={30000} options={ middleOptions } />
