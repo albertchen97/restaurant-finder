@@ -6,7 +6,6 @@ A web application that is similar to Yelp that can get the real-time user locati
 * Next.js
 
 # Get Started
-## Install npm package
 ```bash
 # Install Node Modules (this will install the "node_modules" folder)
 npm install
