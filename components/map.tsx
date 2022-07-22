@@ -34,7 +34,7 @@ export default function Map() {
   //    This optimization helps to avoid expensive calculations on every render.
 
   // center: the React useMemo Hook for the initial center location
-  const center = useMemo<LatLngLiteral>(() => ({ lat: 43, lng: -80 }), []);
+  const center = useMemo<LatLngLiteral>(() => ({ lat: 43.45, lng: -80.49 }), []);
   
   // options: memoize the Google Maps options
   const options = useMemo<MapOptions>(() => ({    
@@ -54,11 +54,36 @@ export default function Map() {
   // State for the office
   const [office, setOffice] = useState<LatLngLiteral>();
 
+  // State for directions
+  const [directions, setDirections] = useState<DirectionsResult>();
+
   // onLoad: a callback for the mapRef object; initialize the ".current" property.
   const onLoad = useCallback((map) => (mapRef.current = map), []);
   
-  // houses: memo for the houses
+  // houses: memo for the houses generated around the center
   const houses = useMemo(() => generateHouses(center), [center]);
+
+  // fetchDirections: get the direction from the house the user clicked on to the office
+  const fetchDirections = (house: LatLngLiteral) => {
+    // Return nothing if there is no office
+    if (!office) return;
+    
+    const service = new google.maps.DirectionsService();
+
+    // Issue a direction search request from house to office via driving
+    //  and place the result into a state
+    service.route({
+      origin: house,
+      destination: office,
+      travelMode: google.maps.TravelMode.DRIVING
+    },
+      (result, status) => {
+        if (status === "OK" && result) {
+          setDirections(result);
+        }
+      }
+    );
+  };
 
   return (
     <div className="container">
@@ -78,7 +103,16 @@ export default function Map() {
           center={center}
           options={options}
           onLoad={onLoad}
-          >
+        >
+
+          {/* Render the direction route line on the map */}
+          {directions && <DirectionsRenderer directions={directions} options={{
+            polylineOptions: {
+              zIndex: 50,
+              strokeColor: "#1976D2",
+              strokeWeight: 5
+            }
+          }} />}
           
           {/* Show the office marker on the map*/}
           {office && (
@@ -94,7 +128,14 @@ export default function Map() {
                     <Marker
                       key={house.lat}
                       position={house}
-                      clusterer={clusterer} />
+                      clusterer={clusterer}
+                      // When clicking a house, display the direction from the house to the office
+                      onClick={() => {
+                        fetchDirections(house)
+                      }
+
+                      }
+                    />
                   ))
                 }
               </MarkerClusterer>
