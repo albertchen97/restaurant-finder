@@ -87,14 +87,25 @@ export default function Map() {
 
   return (
     <div className="container">
+
       {/* Control panel on the left */}
       <div className="controls">
         <h1>Commute?</h1>
         <Places setOffice={(position) => {
           setOffice(position);
           mapRef.current?.panTo(position);
-        } } />
+        }} />
+
+        {/* If there is no office, let the user enter the office address */}
+        {!office && <p>Enter the address of your office.</p>}
+
+        {/* Calculate the distance from home to office */}
+        {/* Leg: a section or portion of a journey or course */}
+        {/* Get the distance of the first leg of the first route */}
+        {directions && <Distance leg={directions.routes[0].legs[0]} />}
+        
       </div>
+      
       {/* Map on the right */}
       <div className="map">
         <GoogleMap
@@ -133,7 +144,6 @@ export default function Map() {
                       onClick={() => {
                         fetchDirections(house)
                       }
-
                       }
                     />
                   ))
@@ -150,12 +160,7 @@ export default function Map() {
               <Circle center={office} radius={45000} options={ farOptions } />
             </>
           )
-
-
           }
-          
-
-
           </GoogleMap>
       </div>
     </div>
