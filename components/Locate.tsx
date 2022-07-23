@@ -1,19 +1,22 @@
 import { GoogleMap } from "@react-google-maps/api"; 
-type LocationProps = {
-  setLocation: (location: google.maps.LatLngLiteral) => void;
+
+// Location type aliase, an object that contains the position property which
+//  is a LatLngLiteral.
+type Location = {
+  setLocation: (position: google.maps.LatLngLiteral) => void;
 };
-export default function Locate({ setLocation }: LocationProps) {
+export default function Locate({ setLocation }: Location) {
   return (
     <button
       className="locate"
       onClick={() => {
         navigator.geolocation.getCurrentPosition(
-          (location) => {
-            // lat: location.coords.latitude;
-            // lng: location.coords.longitude;
-            console.log(location)
-          }
-          ,
+        (geoPos: GeolocationPosition) => {
+            setLocation({
+              lat: geoPos.coords.latitude,
+              lng: geoPos.coords.longitude
+            })
+        },
           () => null,
         );
       }}>Locate</button>
