@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import {
   GoogleMap,
   Marker,
@@ -6,14 +6,15 @@ import {
   Circle,
   MarkerClusterer,
 } from "@react-google-maps/api";
-import Places from "./places";
-import Distance from "./distance";
+import Places from "./Places";
+import Distance from "./Distance";
+import Notification from '../components/Notification'
+import Locate from '../components/Locate'
 
 // TypeScript type aliases
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
-
 
 // Render the map
 export default function Map() {
@@ -37,7 +38,7 @@ export default function Map() {
   const center = useMemo<LatLngLiteral>(() => ({ lat: 43.45, lng: -80.49 }), []);
   
   // options: memoize the Google Maps options
-  const options = useMemo<MapOptions>(() => ({    
+  const options = useMemo<MapOptions>(() => ({
     // mapId: the styled map ID
     mapId: "1691f2058063216f",
     disableDefaultUI: true,
@@ -53,6 +54,8 @@ export default function Map() {
 
   // State for the office
   const [office, setOffice] = useState<LatLngLiteral>();
+
+  const [location, setLocation] = useState<LatLngLiteral>();
 
   // State for directions
   const [directions, setDirections] = useState<DirectionsResult>();
@@ -87,10 +90,10 @@ export default function Map() {
 
   return (
     <div className="container">
-
+      <Notification />
       {/* Control panel on the left */}
       <div className="controls">
-        <h1>Commute?</h1>
+        <h1>Find direction</h1>
         <Places setOffice={(position) => {
           setOffice(position);
           mapRef.current?.panTo(position);
@@ -103,6 +106,11 @@ export default function Map() {
         {/* Leg: a section or portion of a journey or course */}
         {/* Get the distance of the first leg of the first route */}
         {directions && <Distance leg={directions.routes[0].legs[0]} />}
+
+        <Locate setLocation={(location) => {
+          setLocation(location);
+          mapRef.current?.panTo(location);
+        }} />
         
       </div>
       
@@ -115,7 +123,6 @@ export default function Map() {
           options={options}
           onLoad={onLoad}
         >
-
           {/* Render the direction route line on the map */}
           {directions && <DirectionsRenderer directions={directions} options={{
             polylineOptions: {
@@ -161,7 +168,7 @@ export default function Map() {
             </>
           )
           }
-          </GoogleMap>
+        </GoogleMap>
       </div>
     </div>
   );

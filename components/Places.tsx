@@ -31,8 +31,7 @@ type PlacesProps = {
 };
 
 export default function Places({ setOffice }: PlacesProps) {
-
-  const { 
+  const {
     ready,
     value,
     setValue,
@@ -50,19 +49,22 @@ export default function Places({ setOffice }: PlacesProps) {
     const { lat, lng } = await getLatLng(results[0]);
     setOffice({ lat, lng });
   }
-  
-  return <Combobox onSelect = {handleSelect}>
-    <ComboboxInput value={value} onChange={e => setValue(e.target.value)}
-      className="combobox-input"
-      placeholder="Search Office Address"
-    />
-    <ComboboxPopover>
-      <ComboboxList>
-        {status === "OK" &&
-          data.map(({ place_id, description }) => (
-            <ComboboxOption key={place_id} value={description} />
-          ))}
-      </ComboboxList>
-    </ComboboxPopover>
-  </Combobox>;
+
+  return <div>
+    <Combobox onSelect={handleSelect}>
+      <ComboboxInput value={value} onChange={e => setValue(e.target.value)}
+        className="combobox-input"
+        placeholder="Search Restaurants"
+      />
+      <ComboboxPopover>
+        <ComboboxList>
+          {status === "OK" &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption key={place_id} value={description} />
+            ))}
+        </ComboboxList>
+      </ComboboxPopover>
+    </Combobox>
+  </div>
+
 }
