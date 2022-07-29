@@ -5,9 +5,9 @@ import { useEffect } from "react";
 const CustomToast = ({ closeToast }: { closeToast: any }) => {
   return (
     <div>
-      🦄 Check these restaurants around you!
-      <li> McDonald's </li>
-      <li> Burger King </li>
+      🦄 There are 20 restaurants around you!
+        <li> McDonald's </li>
+        <li> Burger King </li>
       <br />
       <button onClick={closeToast}>Check</button>
     </div>

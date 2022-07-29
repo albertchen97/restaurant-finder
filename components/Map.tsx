@@ -53,7 +53,7 @@ export default function Map() {
   //    useCallback(fn, deps) is equivalent to useMemo(() => fn, deps).
 
   // Initial location
-  const initialLocation = useMemo<LatLngLiteral>(() => ({ lat: 50, lng: -90 }), []);
+  const initialLocation = useMemo<LatLngLiteral>(() => ({ lat: 35, lng: -100 }), []);
   
   // User location
   const [userLocation, setUserLocation] = useState<LatLngLiteral>(initialLocation);
@@ -158,7 +158,7 @@ export default function Map() {
                       key={restaurant.lat}
                       position={restaurant}
                       clusterer={clusterer}
-                      
+
                       // When clicking a restaurant, display the direction from the restaurant to the userLocation
                         onClick={() => {
                           fetchDirections(restaurant)
@@ -222,7 +222,7 @@ const generateRestaurants = (position: LatLngLiteral) => {
   // The underscore prefix "_" indicates it's a private variable/method
   const _restaurants: Array<LatLngLiteral> = [];
   for (let i = 0; i < 20; i++) {
-    const direction = Math.random() < 0.5 ? -3.5 : 3.5;
+    const direction = Math.random() < 0.5 ? -4 : 4;
     _restaurants.push({
       lat: position.lat + Math.random() / direction,
       lng: position.lng + Math.random() / direction,

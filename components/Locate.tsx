@@ -11,8 +11,8 @@ export default function Locate({ setUserLocation }: Location) {
         navigator.geolocation.getCurrentPosition(
         (geoPos: GeolocationPosition) => {
             setUserLocation({
-              lat: geoPos.coords.latitude  + 10,
-              lng: geoPos.coords.longitude + 10
+              lat: geoPos.coords.latitude + 1,
+              lng: geoPos.coords.longitude + 1
             })
         },
           () => null,
