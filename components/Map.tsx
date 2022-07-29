@@ -6,9 +6,9 @@ import {
   Circle,
   MarkerClusterer,
 } from "@react-google-maps/api";
-import Places from "./Places";
+import Search from "./Search";
 import Distance from "./Distance";
-import Notification from '../components/Notification'
+import Notification from './Notification'
 import Locate from '../components/Locate'
 
 // TypeScript type aliases
@@ -34,8 +34,8 @@ export default function Map() {
   //    useMemo will only recompute the memoized value when one of the dependencies has changed.
   //    This optimization helps to avoid expensive calculations on every render.
 
-  // center: the React useMemo Hook for the initial center location
-  const center = useMemo<LatLngLiteral>(() => ({ lat: 43.45, lng: -80.49 }), []);
+  // center: the React useMemo Hook for the initial center userLocation
+  // const center = useMemo<LatLngLiteral>(() => ({ lat: 43.45, lng: -80.49 }), []);
   
   // options: memoize the Google Maps options
   const options = useMemo<MapOptions>(() => ({
@@ -52,32 +52,39 @@ export default function Map() {
   //    This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders
   //    useCallback(fn, deps) is equivalent to useMemo(() => fn, deps).
 
-  // State for the office
-  const [office, setOffice] = useState<LatLngLiteral>();
-
-  const [location, setLocation] = useState<LatLngLiteral>();
+  // Initial location
+  const initialLocation = useMemo<LatLngLiteral>(() => ({ lat: 50, lng: -90 }), []);
+  
+  // User location
+  const [userLocation, setUserLocation] = useState<LatLngLiteral>(initialLocation);
 
   // State for directions
   const [directions, setDirections] = useState<DirectionsResult>();
 
   // onLoad: a callback for the mapRef object; initialize the ".current" property.
   const onLoad = useCallback((map) => (mapRef.current = map), []);
-  
-  // houses: memo for the houses generated around the center
-  const houses = useMemo(() => generateHouses(center), [center]);
 
-  // fetchDirections: get the direction from the house the user clicked on to the office
-  const fetchDirections = (house: LatLngLiteral) => {
-    // Return nothing if there is no office
-    if (!office) return;
+  // // restaurants: memo for the restaurants generated around the center
+  const restaurants = useMemo(() => generateRestaurants(userLocation), []);
+
+  // // userLocation: store the user location from either "userLocation" or "userLocation"
+  // const userLocation = useMemo(() => userLocation || userLocation, [center]);
+
+  // fetchDirections: get the direction from the restaurant the user clicked on to the userLocation
+  const fetchDirections = (restaurant: LatLngLiteral) => {
+    // Return nothing if there is no user location
+    // if (!(userLocation && userLocation)) return;
+    // if (!userLocation) return;
+    if (!userLocation) return;
     
     const service = new google.maps.DirectionsService();
-
-    // Issue a direction search request from house to office via driving
+    
+    // Issue a direction search request from the user's location to the restaurant via driving
     //  and place the result into a state
     service.route({
-      origin: house,
-      destination: office,
+      origin: userLocation,
+      // origin: center,
+      destination: restaurant,
       travelMode: google.maps.TravelMode.DRIVING
     },
       (result, status) => {
@@ -90,28 +97,37 @@ export default function Map() {
 
   return (
     <div className="container">
-      <Notification />
+
       {/* Control panel on the left */}
       <div className="controls">
-        <h1>Find direction</h1>
-        <Places setOffice={(position) => {
-          setOffice(position);
+        <h1>Search restaurants around you</h1>
+
+        {/* The search bar, which allows user to enter their location manually */}
+        <Search setUserLocation={(position) => {
+          setUserLocation(position);
           mapRef.current?.panTo(position);
         }} />
+        
+        {/* If there is no userLocation, let the user enter the userLocation address */}
+        {!userLocation && <p>Enter the address of your userLocation or click "Locate" to locate you!</p>}
 
-        {/* If there is no office, let the user enter the office address */}
-        {!office && <p>Enter the address of your office.</p>}
+        <br /><br />
+        <div>
+          {/* The "Locate" button, which will move the map center to the user's current userLocation. */}
+          <Locate setUserLocation={(position) => {
+            setUserLocation(position);
+            mapRef.current?.panTo(position);
+          }} />
+        </div>
 
-        {/* Calculate the distance from home to office */}
+        {/* Prompt the notification after location found */}
+        {mapRef.current && <Notification />}
+
+        {/* Calculate the distance from home to userLocation */}
         {/* Leg: a section or portion of a journey or course */}
         {/* Get the distance of the first leg of the first route */}
         {directions && <Distance leg={directions.routes[0].legs[0]} />}
-
-        <Locate setLocation={(location) => {
-          setLocation(location);
-          mapRef.current?.panTo(location);
-        }} />
-        
+      
       </div>
       
       {/* Map on the right */}
@@ -119,7 +135,7 @@ export default function Map() {
         <GoogleMap
           mapContainerClassName="map-container"
           zoom={10}
-          center={center}
+          center={userLocation}
           options={options}
           onLoad={onLoad}
         >
@@ -132,39 +148,40 @@ export default function Map() {
             }
           }} />}
           
-          {/* Show the office marker on the map*/}
-          {office && (
+          {/* Show the userLocation marker on the map*/}
+          {userLocation&& (
             <>
-              <Marker position={office}
+              <Marker position={userLocation}
                   icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"  
               />
 
-              {/* Cluster the houses (group houses and show number of houses on the same area) */}
+              {/* Cluster the restaurants (group restaurants and show number of restaurants on the same area) */}
               <MarkerClusterer>
                 {(clusterer) =>
-                  houses.map((house) => (
+                  restaurants.map((restaurant) => (
                     <Marker
-                      key={house.lat}
-                      position={house}
+                      key={restaurant.lat}
+                      position={restaurant}
                       clusterer={clusterer}
-                      // When clicking a house, display the direction from the house to the office
-                      onClick={() => {
-                        fetchDirections(house)
-                      }
+                      // When clicking a restaurant, display the direction from the restaurant to the userLocation
+                        onClick={() => {
+                          fetchDirections(restaurant)
+                        }
                       }
                     />
                   ))
                 }
               </MarkerClusterer>
 
-              {houses.map((house) => (
-                <Marker key={house.lat} position={house} />
-              ))}
+              {/* {restaurants.map((restaurant) => (
+                <Marker key={restaurant.lat} position={restaurant} />
+              ))} */}
 
               {/* Add circles for the commutable circle areas (radius in meters)*/}
-              <Circle center={office} radius={15000} options={ closeOptions } />
-              <Circle center={office} radius={30000} options={ middleOptions } />
-              <Circle center={office} radius={45000} options={ farOptions } />
+              {/* The circle center is the user's location */}
+              <Circle center={userLocation} radius={15000} options={ closeOptions } />
+              <Circle center={userLocation} radius={30000} options={ middleOptions } />
+              <Circle center={userLocation} radius={45000} options={ farOptions } />
             </>
           )
           }
@@ -175,7 +192,7 @@ export default function Map() {
 }
 
 const defaultOptions = {
-  strokeOpacity: 0.5,
+  strokeOpacity: 0.9,
   strokeWeight: 2,
   clickable: false,
   draggable: false,
@@ -185,34 +202,34 @@ const defaultOptions = {
 const closeOptions = {
   ...defaultOptions,
   zIndex: 3,
-  fillOpacity: 0.05,
+  fillOpacity: 0.5,
   strokeColor: "#8BC34A",
   fillColor: "#8BC34A",
 };
 const middleOptions = {
   ...defaultOptions,
   zIndex: 2,
-  fillOpacity: 0.05,
+  fillOpacity: 0.5,
   strokeColor: "#FBC02D",
   fillColor: "#FBC02D",
 };
 const farOptions = {
   ...defaultOptions,
   zIndex: 1,
-  fillOpacity: 0.05,
+  fillOpacity: 0.15,
   strokeColor: "#FF5252",
   fillColor: "#FF5252",
 };
 
-// Generate random houses to display
-const generateHouses = (position: LatLngLiteral) => {
-  const _houses: Array<LatLngLiteral> = [];
+// Generate random restaurants to display
+const generateRestaurants = (position: LatLngLiteral) => {
+  const _restaurants: Array<LatLngLiteral> = [];
   for (let i = 0; i < 100; i++) {
     const direction = Math.random() < 0.5 ? -2 : 2;
-    _houses.push({
+    _restaurants.push({
       lat: position.lat + Math.random() / direction,
       lng: position.lng + Math.random() / direction,
     });
   }
-  return _houses;
+  return _restaurants;
 };

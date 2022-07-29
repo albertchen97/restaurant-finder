@@ -1,4 +1,4 @@
-// places.tsx - The Places component which allows the user to search places on Google Maps
+// Search.tsx - The Places component which allows the user to search places on Google Maps
 //  in the search bar.
 
 // Places Autocomplete - Automatically complete the place user searches in the search bar 
@@ -27,10 +27,10 @@ import {
 import "@reach/combobox/styles.css";
 
 type PlacesProps = {
-  setOffice: (position: google.maps.LatLngLiteral) => void;
+  setUserLocation: (position: google.maps.LatLngLiteral) => void;
 };
 
-export default function Places({ setOffice }: PlacesProps) {
+export default function Places({ setUserLocation }: PlacesProps) {
   const {
     ready,
     value,
@@ -47,10 +47,10 @@ export default function Places({ setOffice }: PlacesProps) {
 
     const results = await getGeocode({ address: val });
     const { lat, lng } = await getLatLng(results[0]);
-    setOffice({ lat, lng });
+    setUserLocation({ lat, lng });
   }
 
-  return <div>
+  return (<div>
     <Combobox onSelect={handleSelect}>
       <ComboboxInput value={value} onChange={e => setValue(e.target.value)}
         className="combobox-input"
@@ -66,5 +66,5 @@ export default function Places({ setOffice }: PlacesProps) {
       </ComboboxPopover>
     </Combobox>
   </div>
-
+  )
 }
