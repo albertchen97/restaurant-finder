@@ -39,7 +39,6 @@ export default function Places({ setUserLocation }: PlacesProps) {
     suggestions: { status, data },
     clearSuggestions,
   } = usePlacesAutocomplete();
-  //
 
   // handleSelect - Handle the onSelect event for the Combobox
   const handleSelect = async (val: string) => {

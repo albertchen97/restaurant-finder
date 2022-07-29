@@ -11,16 +11,19 @@ export default function Locate({ setUserLocation }: Location) {
         navigator.geolocation.getCurrentPosition(
         (geoPos: GeolocationPosition) => {
             setUserLocation({
-              lat: geoPos.coords.latitude,
-              lng: geoPos.coords.longitude
+              lat: geoPos.coords.latitude  + 10,
+              lng: geoPos.coords.longitude + 10
             })
         },
           () => null,
         );
   }
   return (
-    <button
-      className="locate"
-      onClick={handleClick}>Locate</button>
+    <div>
+      <button
+        className="locate"
+        onClick={handleClick}>Locate</button>
+    </div>
+
   )
 }

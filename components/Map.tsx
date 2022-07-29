@@ -64,11 +64,8 @@ export default function Map() {
   // onLoad: a callback for the mapRef object; initialize the ".current" property.
   const onLoad = useCallback((map) => (mapRef.current = map), []);
 
-  // // restaurants: memo for the restaurants generated around the center
-  const restaurants = useMemo(() => generateRestaurants(userLocation), []);
-
-  // // userLocation: store the user location from either "userLocation" or "userLocation"
-  // const userLocation = useMemo(() => userLocation || userLocation, [center]);
+  // restaurants: memo for the restaurants generated around the center
+  const restaurants = useMemo(() => generateRestaurants(userLocation), [userLocation]);
 
   // fetchDirections: get the direction from the restaurant the user clicked on to the userLocation
   const fetchDirections = (restaurant: LatLngLiteral) => {
@@ -112,13 +109,11 @@ export default function Map() {
         {!userLocation && <p>Enter the address of your userLocation or click "Locate" to locate you!</p>}
 
         <br /><br />
-        <div>
           {/* The "Locate" button, which will move the map center to the user's current userLocation. */}
           <Locate setUserLocation={(position) => {
             setUserLocation(position);
             mapRef.current?.panTo(position);
           }} />
-        </div>
 
         {/* Prompt the notification after location found */}
         {mapRef.current && <Notification />}
@@ -154,7 +149,7 @@ export default function Map() {
               <Marker position={userLocation}
                   icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"  
               />
-
+              
               {/* Cluster the restaurants (group restaurants and show number of restaurants on the same area) */}
               <MarkerClusterer>
                 {(clusterer) =>
@@ -163,6 +158,7 @@ export default function Map() {
                       key={restaurant.lat}
                       position={restaurant}
                       clusterer={clusterer}
+                      
                       // When clicking a restaurant, display the direction from the restaurant to the userLocation
                         onClick={() => {
                           fetchDirections(restaurant)
@@ -221,11 +217,12 @@ const farOptions = {
   fillColor: "#FF5252",
 };
 
-// Generate random restaurants to display
+// Generate random restaurants around the user
 const generateRestaurants = (position: LatLngLiteral) => {
+  // The underscore prefix "_" indicates it's a private variable/method
   const _restaurants: Array<LatLngLiteral> = [];
-  for (let i = 0; i < 100; i++) {
-    const direction = Math.random() < 0.5 ? -2 : 2;
+  for (let i = 0; i < 20; i++) {
+    const direction = Math.random() < 0.5 ? -3.5 : 3.5;
     _restaurants.push({
       lat: position.lat + Math.random() / direction,
       lng: position.lng + Math.random() / direction,
