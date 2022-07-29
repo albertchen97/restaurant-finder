@@ -16,11 +16,11 @@ type DistanceProps = {
 };
 
 // Render the distance
-export default function Distance({ leg }: DistanceProps) {
+export default function Distance({ leg}: DistanceProps) {
   if (!leg.distance || !leg.duration) return null;
   return (<div>
     <p>
-      This restaurant is <span className="highlight">{leg.distance.text}</span> away from you.
+      <span className="highlight">{}</span> is <span className="highlight">{leg.distance.text}</span> away from you.
       That would take <span className="highlight">{leg.duration.text}</span>.
     </p>
   </div>);

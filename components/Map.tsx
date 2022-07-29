@@ -9,7 +9,7 @@ import {
 import Search from "./Search";
 import Distance from "./Distance";
 import Notification from './Notification'
-import Locate from '../components/Locate'
+import Locate from './Locate'
 
 // TypeScript type aliases
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -60,6 +60,11 @@ export default function Map() {
 
   // State for directions
   const [directions, setDirections] = useState<DirectionsResult>();
+
+  const restaurantNamesList = [
+    "McDonalds", "Burger King", "Halal Guys", "New York Pizza", "Starbucks"
+  ]
+  let labelIndex = 0;
 
   // onLoad: a callback for the mapRef object; initialize the ".current" property.
   const onLoad = useCallback((map) => (mapRef.current = map), []);
@@ -155,9 +160,15 @@ export default function Map() {
                 {(clusterer) =>
                   restaurants.map((restaurant) => (
                     <Marker
-                      key={restaurant.lat}
+                      key={restaurant.lat + restaurant.lng}
                       position={restaurant}
                       clusterer={clusterer}
+                      label={
+                        {
+                          text: restaurantNamesList[labelIndex++ % restaurantNamesList.length],
+                          fontSize: "20px",
+                        }
+                      }
 
                       // When clicking a restaurant, display the direction from the restaurant to the userLocation
                         onClick={() => {
@@ -217,11 +228,15 @@ const farOptions = {
   fillColor: "#FF5252",
 };
 
+type RestaurantProps = {
+  setRestaurantName: (restaurantName: string[]) => void;
+}
+
 // Generate random restaurants around the user
 const generateRestaurants = (position: LatLngLiteral) => {
   // The underscore prefix "_" indicates it's a private variable/method
   const _restaurants: Array<LatLngLiteral> = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 5; i++) {
     const direction = Math.random() < 0.5 ? -4 : 4;
     _restaurants.push({
       lat: position.lat + Math.random() / direction,
