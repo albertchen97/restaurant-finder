@@ -102,7 +102,7 @@ export default function Map() {
 
       {/* Control panel on the left */}
       <div className="controls">
-        <h1>Search restaurants around you</h1>
+        <h1>Enter your location or click "Locate" to search restaurants around you!</h1>
 
         {/* The search bar, which allows user to enter their location manually */}
         <Search setUserLocation={(position) => {
@@ -113,15 +113,13 @@ export default function Map() {
         {/* If there is no userLocation, let the user enter the userLocation address */}
         {!userLocation && <p>Enter the address of your userLocation or click "Locate" to locate you!</p>}
 
+        <br />or
         <br /><br />
           {/* The "Locate" button, which will move the map center to the user's current userLocation. */}
           <Locate setUserLocation={(position) => {
             setUserLocation(position);
             mapRef.current?.panTo(position);
           }} />
-
-        {/* Prompt the notification after location found */}
-        {mapRef.current && <Notification />}
 
         {/* Calculate the distance from home to userLocation */}
         {/* Leg: a section or portion of a journey or course */}
@@ -166,7 +164,7 @@ export default function Map() {
                       label={
                         {
                           text: restaurantNamesList[labelIndex++ % restaurantNamesList.length],
-                          fontSize: "20px",
+                          fontSize: "23px",
                         }
                       }
 
@@ -193,6 +191,8 @@ export default function Map() {
           )
           }
         </GoogleMap>
+        {/* Prompt the notification after location found */}
+        {mapRef.current && userLocation && <Notification />}
       </div>
     </div>
   );
@@ -237,7 +237,7 @@ const generateRestaurants = (position: LatLngLiteral) => {
   // The underscore prefix "_" indicates it's a private variable/method
   const _restaurants: Array<LatLngLiteral> = [];
   for (let i = 0; i < 5; i++) {
-    const direction = Math.random() < 0.5 ? -4 : 4;
+    const direction = Math.random() < 0.5 ? -5 : 5;
     _restaurants.push({
       lat: position.lat + Math.random() / direction,
       lng: position.lng + Math.random() / direction,

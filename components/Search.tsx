@@ -25,6 +25,8 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import Notification from "./Notification"
+import { useEffect } from "react"
 
 type PlacesProps = {
   setUserLocation: (position: google.maps.LatLngLiteral) => void;
@@ -54,7 +56,7 @@ export default function Places({ setUserLocation }: PlacesProps) {
     <Combobox onSelect={handleSelect}>
       <ComboboxInput value={value} onChange={e => setValue(e.target.value)}
         className="combobox-input"
-        placeholder="Search Restaurants"
+        placeholder="Enter your location"
       />
       <ComboboxPopover>
         <ComboboxList>
