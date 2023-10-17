@@ -6,7 +6,7 @@ Restaurant Finder is a single-page web application that can get the real-time us
 
 ---
 
-[A 2-minute Video Demo](https://youtu.be/KzjTX-5gegk)
+[Video Demo](https://youtu.be/KzjTX-5gegk)
 
 ## Tech Stack
 
