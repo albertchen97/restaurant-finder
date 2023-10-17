@@ -6,6 +6,8 @@ Restaurant Finder is a web application that is similar to Yelp that can get the 
 
 ![](images/demo.JPG)
 
+---
+
 [A 2-minute Video Demo](https://youtu.be/KzjTX-5gegk)
 
 ## Language & Tools
