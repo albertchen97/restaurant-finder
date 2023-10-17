@@ -1,6 +1,6 @@
 # Restaurant Finder
 
-Restaurant Finder is a web application that is similar to Yelp that can get the real-time user location on Google Maps and send personalized notifications about the local business around them.
+Restaurant Finder is a single-page web application that can get the real-time user location on Google Maps and send personalized notifications about the local business around them.
 
 ## Demo
 
@@ -17,3 +17,4 @@ Restaurant Finder is a web application that is similar to Yelp that can get the 
 * Google Maps APIs: [Google Maps Platform](https://cloud.google.com/)
 * Notification Feature: [React-Toastify](https://github.com/fkhadra/react-toastify)
 * Linter: [ESlint](https://eslint.org/)
+
