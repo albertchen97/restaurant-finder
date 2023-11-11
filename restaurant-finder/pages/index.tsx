@@ -9,6 +9,6 @@ export default function Home() {
     libraries: ["places"],
   });
   // Check if the Google Maps API script is loaded
-  if(!isLoaded) return <div>Loading...</div>
+  if (!isLoaded) return <div>Loading...</div>;
   return <Map />;
 }

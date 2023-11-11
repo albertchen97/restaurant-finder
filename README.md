@@ -12,7 +12,6 @@ Restaurant Finder is a single-page web application that can get the real-time us
 
 * Language: [TypeScript](https://www.typescriptlang.org/)
 * React Framework: [Next.js](https://nextjs.org/)
-* Google Maps APIs: [Google Maps Platform](https://cloud.google.com/)
+* Google Maps APIs: [Google Maps Platform](https://mapsplatform.google.com/)
 * Notification Feature: [React-Toastify](https://github.com/fkhadra/react-toastify)
 * Linter: [ESlint](https://eslint.org/)
-
