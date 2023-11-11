@@ -4,19 +4,19 @@ Restaurant Finder is a single-page web application that can get the real-time us
 
 ## Initial Page
 
-![](images/initial_page.png)
+![Initial Page](images/initial_page.png)
 
 ## Search Bar with Autocomplete
 
-![](images/autocomplete.png)
+![Search Bar with Autocomplete](images/autocomplete.png)
 
 ## Nearby Restaurant Recommendation Notification
 
-![](images/notification.png)
+![Nearby Restaurant Recommendation Notification](images/notification.png)
 
 ## Show Direction to Restaurant and Calculate Distance and Time
 
-![](images/direction_and_calculation.png)
+![Show Direction to Restaurant and Calculate Distance and Time](images/direction_and_calculation.png)
 
 ---
 
