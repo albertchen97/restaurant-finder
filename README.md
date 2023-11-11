@@ -8,7 +8,7 @@ Restaurant Finder is a single-page web application that can get the real-time us
 
 ## Search Bar with Autocomplete
 
-![](images/autocomplete.pngj)
+![](images/autocomplete.png)
 
 ## Nearby Restaurant Recommendation Notification
 
