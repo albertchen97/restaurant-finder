@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import {
   GoogleMap,
@@ -66,6 +67,8 @@ export default function Map() {
   // State for directions
   const [directions, setDirections] = useState<DirectionsResult>();
 
+  // TODO: Use an API to generate a real list based on the geolocation
+  // Hard-coded rastaurant list
   const restaurantNamesList = [
     "McDonalds",
     "Burger King",
@@ -115,8 +118,8 @@ export default function Map() {
       {/* Control panel on the left */}
       <div className="controls">
         <h1>
-          Enter your location or click "Locate" to search restaurants around
-          you!
+          Enter your location or click &quot;Locate&quot; to search restaurants
+          around you!
         </h1>
         {/* The search bar, which allows user to enter their location manually */}
         <Places
@@ -128,8 +131,8 @@ export default function Map() {
         {/* If there is no userLocation, let the user enter the userLocation address */}
         {!userLocation && (
           <p>
-            Enter the address of your userLocation or click "Locate" to locate
-            you!
+            Enter the address of your userLocation or click &quot;Locate&quot;
+            to locate you!
           </p>
         )}
         <br />
