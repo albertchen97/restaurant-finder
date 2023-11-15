@@ -1,4 +1,5 @@
-// Search.tsx - The Places component which allows the user to search places on Google Maps
+/* eslint-disable react/react-in-jsx-scope */
+// Places.tsx - The Places component which allows the user to search places on Google Maps
 //  in the search bar.
 
 // Places Autocomplete - Automatically complete the place user searches in the search bar
