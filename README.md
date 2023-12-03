@@ -18,10 +18,6 @@ Restaurant Finder is a single-page web application that can get the real-time us
 
 ![Show Direction to Restaurant and Calculate Distance and Time](images/direction_and_calculation.png)
 
----
-
-[Video Demo](https://youtu.be/KzjTX-5gegk)
-
 ## Tech Stack
 
 * Language: [TypeScript](https://www.typescriptlang.org/)
